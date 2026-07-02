@@ -97,3 +97,51 @@ jobs:
       uses: github/codeql-action/analyze@v4
       with:
         category: "/language:${{matrix.language}}"
+
+  notify-on-alert:
+    needs: analyze
+    # code_scanning_alert isn't a valid Actions trigger event, so instead of
+    # reacting to alert creation directly, poll the code scanning API after
+    # each scheduled run. Limited to `schedule` (not push/pull_request) so
+    # this doesn't re-comment on the tracking issue on every commit to main
+    # -- PRs already surface new alerts inline via the standard CodeQL PR
+    # annotations.
+    if: always() && github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: read
+      issues: write
+    steps:
+      - name: Open or update an issue tagging Claude about open CodeQL alerts
+        env:
+          # Use a PAT, not github.token: events created by the default
+          # GITHUB_TOKEN don't trigger other workflows (e.g. claude.yml),
+          # so a comment/issue opened here would never actually reach Claude.
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          alerts=$(gh api "repos/$REPO/code-scanning/alerts?state=open" --paginate --jq \
+            '[.[] | "- **\(.rule.description)** (severity: \(.rule.severity)) in `\(.most_recent_instance.location.path // "unknown")` — \(.html_url)"] | join("\n")')
+
+          if [ -z "$alerts" ]; then
+            echo "No open CodeQL alerts."
+            exit 0
+          fi
+
+          gh label create codeql-alert --color b60205 --description "Automated: open CodeQL code scanning alerts" --force --repo "$REPO"
+
+          existing=$(gh issue list --repo "$REPO" --label codeql-alert --state open --json number --jq '.[0].number // empty')
+
+          body="@claude CodeQL has open code scanning alerts as of $RUN_URL:
+
+          $alerts
+
+          Please investigate and fix each, or explain why it's a false positive."
+
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "$REPO" --body "$body"
+          else
+            gh issue create --repo "$REPO" --title "CodeQL found open alerts" --label codeql-alert --body "$body"
+          fi
