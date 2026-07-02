@@ -35,6 +35,13 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Without this, Claude's own git pushes use the default GITHUB_TOKEN
+          # (actor shows as github-actions[bot]), and GitHub stalls the
+          # resulting pull_request-triggered lint run as "action_required"
+          # pending manual approval -- silently blocking every retry commit
+          # from ever getting CI-verified. Confirmed live during the
+          # retry-logic test.
+          github_token: ${{ secrets.GH_PAT }}
 
           # Optional: Customize the trigger phrase (default: @claude)
           # trigger_phrase: "/claude"

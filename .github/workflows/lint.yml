@@ -2,6 +2,7 @@ name: Lint backup scripts
 
 on:
   push:
+    branches: [main]
     paths:
       - 'backup-mac.sh'
       - 'backup-windows.ps1'
