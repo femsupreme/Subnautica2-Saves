@@ -35,7 +35,10 @@ jobs:
     steps:
       - name: Open or update a CI-failure issue
         env:
-          GH_TOKEN: ${{ github.token }}
+          # Use a PAT, not github.token: events created by the default
+          # GITHUB_TOKEN don't trigger other workflows (e.g. claude.yml),
+          # so an issue opened here would never actually reach Claude.
+          GH_TOKEN: ${{ secrets.GH_PAT }}
           REPO: ${{ github.repository }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
