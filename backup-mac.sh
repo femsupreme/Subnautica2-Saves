@@ -9,6 +9,9 @@ BACKUP_ROOT="$REPO_ROOT/Save Backups"
 configure() {
   read -r -p "Enter the full path to your Subnautica 2 save folder: " save_path
   save_path="${save_path/#\~/$HOME}"
+  # Un-escape backslash-escaped spaces/special chars (e.g. pasted from a
+  # shell-escaped path) -- real Mac/Linux paths never contain literal backslashes.
+  save_path="${save_path//\\/}"
   if [[ ! -d "$save_path" ]]; then
     echo "Warning: '$save_path' does not exist yet. Saving anyway." >&2
   fi

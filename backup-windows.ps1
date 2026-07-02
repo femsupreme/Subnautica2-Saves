@@ -12,6 +12,14 @@ $BackupRoot = Join-Path $RepoRoot "Save Backups"
 
 function Set-Configuration {
     $savePath = Read-Host "Enter the full path to your Subnautica 2 save folder"
+    $savePath = $savePath.Trim()
+    # Strip surrounding quotes (e.g. from Explorer's "Copy as path", which
+    # wraps the path in double quotes that get typed/pasted in literally).
+    $isDoubleQuoted = $savePath.StartsWith('"') -and $savePath.EndsWith('"')
+    $isSingleQuoted = $savePath.StartsWith("'") -and $savePath.EndsWith("'")
+    if ($savePath.Length -ge 2 -and ($isDoubleQuoted -or $isSingleQuoted)) {
+        $savePath = $savePath.Substring(1, $savePath.Length - 2)
+    }
     if (-not (Test-Path $savePath)) {
         Write-Warning "'$savePath' does not exist yet. Saving anyway."
     }
