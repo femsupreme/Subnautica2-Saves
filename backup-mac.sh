@@ -75,7 +75,7 @@ if [[ ! -r "$SAVE_PATH" ]]; then
   die "Save path '$SAVE_PATH' is not readable (check permissions)."
 fi
 
-if [[ -z "$(ls -A "$SAVE_PATH" 2>/dev/null)" ]]; then
+if [[ -z "$(find "$SAVE_PATH" -mindepth 1 -print -quit 2>/dev/null)" ]]; then
   die "Save path '$SAVE_PATH' is empty. Refusing to wipe today's backup with nothing -- check the path and that Subnautica 2 has actually written a save."
 fi
 
