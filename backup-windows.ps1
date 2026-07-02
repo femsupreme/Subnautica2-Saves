@@ -46,7 +46,7 @@ function Test-OnBranch {
     }
 }
 
-function Set-Configuration {
+function Initialize-Configuration {
     $savePath = Read-Host "Enter the full path to your Subnautica 2 save folder"
     $savePath = $savePath.Trim()
     # Strip surrounding quotes (e.g. from Explorer's "Copy as path", which
@@ -77,7 +77,7 @@ Test-GitAvailable
 Test-GitRepo
 
 if ($Configure -or -not (Test-Path $ConfigFile)) {
-    Set-Configuration
+    Initialize-Configuration
 }
 
 $config = @{}
