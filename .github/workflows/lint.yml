@@ -146,6 +146,12 @@ jobs:
           $ErrorActionPreference = $PrevEAP
           if ($LASTEXITCODE -eq 0) { throw "corrupted script with an undefined variable should have failed under Set-StrictMode, but it exited 0" }
 
+          # The pwsh step wrapper propagates whatever $LASTEXITCODE is at the end of
+          # the script as this step's own exit code. Without this, the intentional
+          # non-zero exit from the corrupted-script check above -- even though we
+          # already asserted it correctly -- would make this step report failure.
+          $LASTEXITCODE = 0
+
           Write-Host "Smoke test passed."
           Pop-Location
 
