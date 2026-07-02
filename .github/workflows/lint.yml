@@ -6,6 +6,7 @@ on:
       - 'backup-mac.sh'
       - 'backup-windows.ps1'
       - '.github/workflows/lint.yml'
+      - '.github/workflows/claude.yml'
 
 jobs:
   shellcheck:
@@ -43,11 +44,11 @@ jobs:
           existing=$(gh issue list --repo "$REPO" --label ci-failure --state open --json number --jq '.[0].number // empty')
 
           if [ -n "$existing" ]; then
-            gh issue comment "$existing" --repo "$REPO" --body "Still failing as of ${{ github.sha }}.
+            gh issue comment "$existing" --repo "$REPO" --body "@claude still failing as of ${{ github.sha }}.
 
           Run: $RUN_URL"
           else
-            gh issue create --repo "$REPO" --title "CI is failing" --label ci-failure --body "First failed on ${{ github.sha }}.
+            gh issue create --repo "$REPO" --title "CI is failing" --label ci-failure --body "@claude please investigate and fix. First failed on ${{ github.sha }}.
 
           Run: $RUN_URL"
           fi
