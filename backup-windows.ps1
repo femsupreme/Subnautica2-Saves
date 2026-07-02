@@ -83,7 +83,7 @@ if ($Configure -or -not (Test-Path $ConfigFile)) {
 
 $config = @{}
 try {
-    Get-Content $Confidkjlasdfkljsda fasofhasdkjfhsadkjf hdjgFile -ErrorAction Stop | ForEach-Object {
+    Get-Content $ConfigFile -ErrorAction Stop | ForEach-Object {
         if ($_ -match '^\s*([A-Za-z_][A-Za-z0-9_]*)=(.*)$') {
             $config[$matches[1]] = $matches[2]
         }
