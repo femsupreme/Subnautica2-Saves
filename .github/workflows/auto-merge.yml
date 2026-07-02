@@ -7,7 +7,7 @@ on:
 
 jobs:
   auto-merge:
-    if: github.event.workflow_run.conclusion == 'success' # temporarily disabled for live retry-logic testing; remove "false && " to re-enable
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -18,8 +18,7 @@ jobs:
           # Use a PAT, not github.token: merges performed with the default
           # GITHUB_TOKEN don't trigger the "Fixes #N" auto-close-on-merge
           # linkage, so the tracking issue is left open even though the fix
-          # landed (confirmed via live test: PR merged clean, issue #12
-          # stayed open with no closed/closing event in its timeline).
+          # landed.
           GH_TOKEN: ${{ secrets.GH_PAT }}
           REPO: ${{ github.repository }}
           SHA: ${{ github.event.workflow_run.head_sha }}

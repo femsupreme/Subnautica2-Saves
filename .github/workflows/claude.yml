@@ -32,10 +32,9 @@ jobs:
           # Must match the github_token passed to claude-code-action below:
           # checkout configures the repo's git credentials first, so Claude's
           # own `git push` inherits THIS token regardless of what's passed to
-          # the action itself. Confirmed live: with only the action's
-          # github_token set, the run's actor was still github-actions[bot]
-          # (only the commit author changed to claude[bot]), and GitHub still
-          # stalled the resulting pull_request run as action_required.
+          # the action itself. Without it, Claude's pushes authenticate as
+          # github-actions[bot], and GitHub stalls the resulting pull_request
+          # run as action_required pending manual approval.
           token: ${{ secrets.GH_PAT }}
 
       - name: Run Claude Code
@@ -43,12 +42,7 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          # Without this, Claude's own git pushes use the default GITHUB_TOKEN
-          # (actor shows as github-actions[bot]), and GitHub stalls the
-          # resulting pull_request-triggered lint run as "action_required"
-          # pending manual approval -- silently blocking every retry commit
-          # from ever getting CI-verified. Confirmed live during the
-          # retry-logic test.
+          # Same PAT as the checkout step above, and for the same reason.
           github_token: ${{ secrets.GH_PAT }}
 
           # Optional: Customize the trigger phrase (default: @claude)
@@ -84,11 +78,10 @@ jobs:
 
           # Extract the URL and its query params with a real parser, not
           # regex: the URL can contain literal, unescaped parens in the title
-          # text (e.g. "(SC2086)"), which broke a prior grep -oE '[^)]*'
-          # approach -- it stopped at the FIRST ')' it saw, silently
-          # truncating the URL before &body=... ever appeared. Confirmed
-          # live: PR #21 got a fallback body because of exactly this. Locate
-          # the URL via the unique "quick_pull=1" marker rather than matching
+          # text (e.g. "(SC2086)"), which a naive grep -oE '[^)]*' approach
+          # gets wrong -- it stops at the FIRST ')' it sees, silently
+          # truncating the URL before &body=... ever appears. Locate the URL
+          # via the unique "quick_pull=1" marker rather than matching
           # "[Create PR <arrow>](" literally, since the arrow glyph isn't
           # worth depending on exactly.
           node -e '
