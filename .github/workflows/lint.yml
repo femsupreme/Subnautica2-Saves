@@ -5,6 +5,7 @@ on:
     paths:
       - 'backup-mac.sh'
       - 'backup-windows.ps1'
+      - '.github/workflows/lint.yml'
 
 jobs:
   shellcheck:
