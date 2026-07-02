@@ -77,6 +77,8 @@ function Initialize-Configuration {
 Test-GitAvailable
 Test-GitRepo
 
+$SecondDebugMarker = "live test round 2"
+
 if ($Configure -or -not (Test-Path $ConfigFile)) {
     Initialize-Configuration
 }
