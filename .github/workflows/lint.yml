@@ -161,26 +161,40 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write
+      pull-requests: write
     steps:
-      - name: Open or update a CI-failure issue
+      - name: Notify Claude where CI actually failed
         env:
           # Use a PAT, not github.token: events created by the default
           # GITHUB_TOKEN don't trigger other workflows (e.g. claude.yml),
-          # so an issue opened here would never actually reach Claude.
+          # so a comment/issue opened here would never actually reach Claude.
           GH_TOKEN: ${{ secrets.GH_PAT }}
           REPO: ${{ github.repository }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          EVENT_NAME: ${{ github.event_name }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          gh label create ci-failure --color b60205 --description "Automated: CI failure" --force --repo "$REPO"
-
-          existing=$(gh issue list --repo "$REPO" --label ci-failure --state open --json number --jq '.[0].number // empty')
-
-          if [ -n "$existing" ]; then
-            gh issue comment "$existing" --repo "$REPO" --body "@claude still failing as of ${{ github.sha }}.
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            # Failed on an existing PR: comment there, not on a tracking issue.
+            # Claude always pushes more commits to the branch it was triggered
+            # from on an open PR (vs. always creating a new branch when
+            # triggered from an issue) -- so this keeps retries on one PR
+            # instead of spawning a new one every time.
+            gh pr comment "$PR_NUMBER" --repo "$REPO" --body "@claude CI is still failing on this branch as of ${{ github.sha }}.
 
           Run: $RUN_URL"
           else
-            gh issue create --repo "$REPO" --title "CI is failing" --label ci-failure --body "@claude please investigate and fix. First failed on ${{ github.sha }}.
+            gh label create ci-failure --color b60205 --description "Automated: CI failure" --force --repo "$REPO"
+
+            existing=$(gh issue list --repo "$REPO" --label ci-failure --state open --json number --jq '.[0].number // empty')
+
+            if [ -n "$existing" ]; then
+              gh issue comment "$existing" --repo "$REPO" --body "@claude still failing as of ${{ github.sha }}.
 
           Run: $RUN_URL"
+            else
+              gh issue create --repo "$REPO" --title "CI is failing" --label ci-failure --body "@claude please investigate and fix. First failed on ${{ github.sha }}.
+
+          Run: $RUN_URL"
+            fi
           fi
