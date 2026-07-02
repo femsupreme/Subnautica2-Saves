@@ -31,8 +31,126 @@ jobs:
           Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
           Invoke-ScriptAnalyzer -Path backup-windows.ps1 -Severity Warning,Error -ExcludeRule PSAvoidUsingWriteHost -EnableExit
 
+  smoke-test-mac:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run backup-mac.sh against a scratch repo
+        run: |
+          set -euo pipefail
+          git config --global user.email "ci@example.com"
+          git config --global user.name "CI Smoke Test"
+
+          WORK=$(mktemp -d)
+          FAKE_ORIGIN="$WORK/origin.git"
+          FAKE_REPO="$WORK/repo"
+          FAKE_SAVE="$WORK/save"
+
+          git init --quiet --bare "$FAKE_ORIGIN"
+          git clone --quiet "$FAKE_ORIGIN" "$FAKE_REPO"
+          cp backup-mac.sh "$FAKE_REPO/backup-mac.sh"
+          chmod +x "$FAKE_REPO/backup-mac.sh"
+
+          mkdir -p "$FAKE_SAVE"
+          echo "dummy save data" > "$FAKE_SAVE/save0.sav"
+          echo "SAVE_PATH=$FAKE_SAVE" > "$FAKE_REPO/backup.config"
+
+          cd "$FAKE_REPO"
+          git checkout -b main --quiet
+          git add backup-mac.sh
+          git commit -m "init" --quiet
+          git push --quiet -u origin main
+
+          echo "--- First run: should back up and push ---"
+          ./backup-mac.sh
+          TODAY="$(date +%Y-%m-%d)"
+          test -f "Save Backups/$TODAY/save0.sav" || { echo "::error::backup file missing after first run"; exit 1; }
+          git log -1 --format=%s | grep -q "^Backup " || { echo "::error::expected a Backup commit"; exit 1; }
+
+          echo "--- Second run with no changes: should no-op ---"
+          BEFORE="$(git rev-parse HEAD)"
+          ./backup-mac.sh
+          AFTER="$(git rev-parse HEAD)"
+          [ "$BEFORE" = "$AFTER" ] || { echo "::error::second run should not have created a new commit"; exit 1; }
+
+          echo "--- Regression test: corrupted variable reference should fail loudly (set -u) ---"
+          sed 's/source "\$CONFIG_FILE"/source "\$CONFIGdkjfhsdkjFILE"/' backup-mac.sh > backup-mac-corrupted.sh
+          chmod +x backup-mac-corrupted.sh
+          if ./backup-mac-corrupted.sh; then
+            echo "::error::corrupted script with an undefined variable should have failed under 'set -u', but it didn't"
+            exit 1
+          fi
+
+          echo "Smoke test passed."
+
+  smoke-test-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run backup-windows.ps1 against a scratch repo
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          git config --global user.email "ci@example.com"
+          git config --global user.name "CI Smoke Test"
+
+          $Work = Join-Path $env:RUNNER_TEMP "smoke-$([guid]::NewGuid())"
+          $FakeOrigin = Join-Path $Work "origin.git"
+          $FakeRepo = Join-Path $Work "repo"
+          $FakeSave = Join-Path $Work "save"
+          New-Item -ItemType Directory -Path $Work, $FakeSave -Force | Out-Null
+
+          git init --quiet --bare $FakeOrigin
+          git clone --quiet $FakeOrigin $FakeRepo
+          Copy-Item "backup-windows.ps1" -Destination $FakeRepo
+
+          Set-Content -Path (Join-Path $FakeSave "save0.sav") -Value "dummy save data"
+          Set-Content -Path (Join-Path $FakeRepo "backup.config") -Value "SAVE_PATH=$FakeSave"
+
+          Push-Location $FakeRepo
+          git checkout -b main --quiet
+          git add backup-windows.ps1
+          git commit -m "init" --quiet
+          git push --quiet -u origin main
+
+          # Invoked as a real subprocess (pwsh -File), not dot-sourced/direct-called:
+          # the script's own `exit` calls must only end the child process, not this
+          # whole step -- otherwise its no-op "exit 0" path would end the step early
+          # and every assertion after it would silently never run.
+          Write-Host "--- First run: should back up and push ---"
+          pwsh -File ./backup-windows.ps1
+          if ($LASTEXITCODE -ne 0) { throw "first run should have succeeded, exit code $LASTEXITCODE" }
+          $Today = Get-Date -Format "yyyy-MM-dd"
+          $BackupFile = Join-Path "Save Backups" $Today "save0.sav"
+          if (-not (Test-Path $BackupFile)) { throw "backup file missing after first run" }
+          $LastMsg = git log -1 --format=%s
+          if ($LastMsg -notlike "Backup *") { throw "expected a Backup commit, got '$LastMsg'" }
+
+          Write-Host "--- Second run with no changes: should no-op ---"
+          $Before = git rev-parse HEAD
+          pwsh -File ./backup-windows.ps1
+          if ($LASTEXITCODE -ne 0) { throw "second (no-op) run should have exited 0, got $LASTEXITCODE" }
+          $After = git rev-parse HEAD
+          if ($Before -ne $After) { throw "second run should not have created a new commit" }
+
+          Write-Host "--- Regression test: corrupted variable reference should fail loudly (Set-StrictMode) ---"
+          $Corrupted = Join-Path $FakeRepo "backup-windows-corrupted.ps1"
+          (Get-Content backup-windows.ps1 -Raw) -replace '\$ConfigFile -ErrorAction Stop', '$ConfigFldkjfhsdkjile -ErrorAction Stop' | Set-Content $Corrupted
+
+          # Suppress EAP around this call: PS 7.4+ can turn a native command's
+          # non-zero exit into a terminating error, which would abort this step
+          # before we get to check $LASTEXITCODE ourselves.
+          $PrevEAP = $ErrorActionPreference
+          $ErrorActionPreference = "Continue"
+          pwsh -File $Corrupted
+          $ErrorActionPreference = $PrevEAP
+          if ($LASTEXITCODE -eq 0) { throw "corrupted script with an undefined variable should have failed under Set-StrictMode, but it exited 0" }
+
+          Write-Host "Smoke test passed."
+          Pop-Location
+
   notify-on-failure:
-    needs: [shellcheck, psscriptanalyzer]
+    needs: [shellcheck, psscriptanalyzer, smoke-test-mac, smoke-test-windows]
     if: failure()
     runs-on: ubuntu-latest
     permissions:
