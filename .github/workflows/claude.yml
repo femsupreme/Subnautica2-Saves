@@ -29,6 +29,14 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
+          # Must match the github_token passed to claude-code-action below:
+          # checkout configures the repo's git credentials first, so Claude's
+          # own `git push` inherits THIS token regardless of what's passed to
+          # the action itself. Confirmed live: with only the action's
+          # github_token set, the run's actor was still github-actions[bot]
+          # (only the commit author changed to claude[bot]), and GitHub still
+          # stalled the resulting pull_request run as action_required.
+          token: ${{ secrets.GH_PAT }}
 
       - name: Run Claude Code
         id: claude
@@ -62,29 +70,54 @@ jobs:
           REPO: ${{ github.repository }}
           ISSUE: ${{ github.event.issue.number }}
         run: |
-          urldecode() {
-            local data="${1//+/ }"
-            printf '%b' "${data//%/\\x}"
-          }
-
           # Match by content (the quick_pull marker), not author: passing
           # github_token above means Claude's status comment is now posted as
           # the PAT owner, not claude[bot], so filtering by user login no
           # longer matches anything.
-          link=$(gh api "repos/$REPO/issues/$ISSUE/comments" --jq \
-            '[.[] | select(.body | contains("quick_pull=1"))] | last | .body' \
-            | grep -oE 'https://github\.com/[^)]+quick_pull=1[^)]*' | head -1)
+          comment_body=$(gh api "repos/$REPO/issues/$ISSUE/comments" --jq \
+            '[.[] | select(.body | contains("quick_pull=1"))] | last | .body')
 
-          if [ -z "$link" ]; then
+          if [ -z "$comment_body" ]; then
             echo "No 'Create PR' link found in Claude's comment; nothing to open."
             exit 0
           fi
 
-          branch=$(echo "$link" | grep -oE 'compare/main\.\.\.[^?]+' | sed 's#compare/main\.\.\.##')
-          raw_title=$(echo "$link" | grep -oE 'title=[^&]*' | sed 's/^title=//')
-          raw_body=$(echo "$link" | grep -oE 'body=[^&]*' | sed 's/^body=//')
-          title=$(urldecode "$raw_title")
-          body=$(urldecode "$raw_body")
+          # Extract the URL and its query params with a real parser, not
+          # regex: the URL can contain literal, unescaped parens in the title
+          # text (e.g. "(SC2086)"), which broke a prior grep -oE '[^)]*'
+          # approach -- it stopped at the FIRST ')' it saw, silently
+          # truncating the URL before &body=... ever appeared. Confirmed
+          # live: PR #21 got a fallback body because of exactly this. Locate
+          # the URL via the unique "quick_pull=1" marker rather than matching
+          # "[Create PR <arrow>](" literally, since the arrow glyph isn't
+          # worth depending on exactly.
+          node -e '
+            const fs = require("fs");
+            const body = process.argv[1];
+            const qpIdx = body.indexOf("quick_pull=1");
+            if (qpIdx === -1) process.exit(1);
+            const linkStart = body.lastIndexOf("](", qpIdx);
+            if (linkStart === -1) process.exit(1);
+            let i = linkStart + 2, depth = 1, url = "";
+            while (i < body.length && depth > 0) {
+              const ch = body[i];
+              if (ch === "(") depth++;
+              else if (ch === ")") { depth--; if (depth === 0) break; }
+              url += ch;
+              i++;
+            }
+            const u = new URL(url);
+            const branch = decodeURIComponent(u.pathname.split("/compare/main...")[1] || "");
+            fs.writeFileSync("/tmp/pr_branch.txt", branch);
+            fs.writeFileSync("/tmp/pr_title.txt", u.searchParams.get("title") || "");
+            fs.writeFileSync("/tmp/pr_body.txt", u.searchParams.get("body") || "");
+          ' "$comment_body" || { echo "Could not parse Create PR link; nothing to open."; exit 0; }
+
+          branch=$(cat /tmp/pr_branch.txt)
+          if [ -z "$branch" ]; then
+            echo "Could not determine branch name; nothing to open."
+            exit 0
+          fi
 
           existing=$(gh pr list --repo "$REPO" --head "$branch" --state all --json number --jq '.[0].number // empty')
           if [ -n "$existing" ]; then
@@ -93,5 +126,5 @@ jobs:
           fi
 
           gh pr create --repo "$REPO" --head "$branch" --base main \
-            --title "${title:-Fix from Claude ($branch)}" \
-            --body "${body:-See branch $branch.}"
+            --title "$(cat /tmp/pr_title.txt)" \
+            --body-file /tmp/pr_body.txt
