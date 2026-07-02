@@ -8,6 +8,7 @@ on:
       - 'backup-windows.ps1'
       - '.github/workflows/lint.yml'
       - '.github/workflows/claude.yml'
+      - '.github/workflows/auto-merge.yml'
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
