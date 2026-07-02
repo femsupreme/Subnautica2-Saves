@@ -9,6 +9,7 @@ on:
       - '.github/workflows/lint.yml'
       - '.github/workflows/claude.yml'
       - '.github/workflows/auto-merge.yml'
+      - '.github/workflows/codeql.yml'
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
