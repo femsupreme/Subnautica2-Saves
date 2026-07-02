@@ -77,6 +77,8 @@ function Initialize-Configuration {
 Test-GitAvailable
 Test-GitRepo
 
+$DebugMarker = "Added back as a test of bad commit fixing logic"
+
 if ($Configure -or -not (Test-Path $ConfigFile)) {
     Initialize-Configuration
 }
