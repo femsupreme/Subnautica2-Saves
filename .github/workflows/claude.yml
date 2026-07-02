@@ -43,3 +43,44 @@ jobs:
           # claude_args: |
           #   --allowedTools "Bash(shellcheck:*),Bash(git:*)"
           #   --system-prompt "This repo backs up Subnautica 2 saves via backup-mac.sh and backup-windows.ps1, which must stay behaviorally in sync. Never touch files under 'Save Backups/'."
+
+      # Claude only pushes a branch and leaves a prefilled "Create PR" link in
+      # its comment (anthropics/claude-code-action never opens PRs itself).
+      # This step opens that PR on its behalf, reusing the title/body Claude
+      # already wrote, so the branch doesn't just sit there waiting on a click.
+      - name: Open a PR for Claude's branch, if one was created
+        if: github.event_name == 'issues' || (github.event_name == 'issue_comment' && github.event.issue.pull_request == null)
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          REPO: ${{ github.repository }}
+          ISSUE: ${{ github.event.issue.number }}
+        run: |
+          urldecode() {
+            local data="${1//+/ }"
+            printf '%b' "${data//%/\\x}"
+          }
+
+          link=$(gh api "repos/$REPO/issues/$ISSUE/comments" --jq \
+            '[.[] | select(.user.login == "claude[bot]")] | last | .body' \
+            | grep -oE 'https://github\.com/[^)]+quick_pull=1[^)]*' | head -1)
+
+          if [ -z "$link" ]; then
+            echo "No 'Create PR' link found in Claude's comment; nothing to open."
+            exit 0
+          fi
+
+          branch=$(echo "$link" | grep -oE 'compare/main\.\.\.[^?]+' | sed 's#compare/main\.\.\.##')
+          raw_title=$(echo "$link" | grep -oE 'title=[^&]*' | sed 's/^title=//')
+          raw_body=$(echo "$link" | grep -oE 'body=[^&]*' | sed 's/^body=//')
+          title=$(urldecode "$raw_title")
+          body=$(urldecode "$raw_body")
+
+          existing=$(gh pr list --repo "$REPO" --head "$branch" --state all --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            echo "PR already exists for $branch (#$existing)."
+            exit 0
+          fi
+
+          gh pr create --repo "$REPO" --head "$branch" --base main \
+            --title "${title:-Fix from Claude ($branch)}" \
+            --body "${body:-See branch $branch.}"

@@ -7,6 +7,11 @@ on:
       - 'backup-windows.ps1'
       - '.github/workflows/lint.yml'
       - '.github/workflows/claude.yml'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'backup-mac.sh'
+      - 'backup-windows.ps1'
 
 jobs:
   shellcheck:
