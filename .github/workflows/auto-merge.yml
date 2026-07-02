@@ -15,7 +15,12 @@ jobs:
     steps:
       - name: Merge the open PR sitting on this commit, if any
         env:
-          GH_TOKEN: ${{ github.token }}
+          # Use a PAT, not github.token: merges performed with the default
+          # GITHUB_TOKEN don't trigger the "Fixes #N" auto-close-on-merge
+          # linkage, so the tracking issue is left open even though the fix
+          # landed (confirmed via live test: PR merged clean, issue #12
+          # stayed open with no closed/closing event in its timeline).
+          GH_TOKEN: ${{ secrets.GH_PAT }}
           REPO: ${{ github.repository }}
           SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
