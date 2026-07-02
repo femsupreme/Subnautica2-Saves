@@ -7,7 +7,7 @@ on:
 
 jobs:
   auto-merge:
-    if: false && github.event.workflow_run.conclusion == 'success' # temporarily disabled for live retry-logic testing; remove "false && " to re-enable
+    if: github.event.workflow_run.conclusion == 'success' # temporarily disabled for live retry-logic testing; remove "false && " to re-enable
     runs-on: ubuntu-latest
     permissions:
       contents: write
