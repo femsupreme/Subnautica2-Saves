@@ -67,8 +67,12 @@ jobs:
             printf '%b' "${data//%/\\x}"
           }
 
+          # Match by content (the quick_pull marker), not author: passing
+          # github_token above means Claude's status comment is now posted as
+          # the PAT owner, not claude[bot], so filtering by user login no
+          # longer matches anything.
           link=$(gh api "repos/$REPO/issues/$ISSUE/comments" --jq \
-            '[.[] | select(.user.login == "claude[bot]")] | last | .body' \
+            '[.[] | select(.body | contains("quick_pull=1"))] | last | .body' \
             | grep -oE 'https://github\.com/[^)]+quick_pull=1[^)]*' | head -1)
 
           if [ -z "$link" ]; then
