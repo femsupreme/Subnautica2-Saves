@@ -16,6 +16,8 @@ Backup repo for Subnautica 2 saves.
 
 You'll be asked for the full path to your Subnautica 2 save folder. It's saved to a local `backup.config` file that's gitignored.
 
+Paste the path however your system hands it to you — the quotes from Windows Explorer's **Copy as path**, or a path dragged into the Mac Terminal (with a leading `~` or backslash-escaped spaces). The surrounding quotes and escaping are cleaned up automatically.
+
 ## Running a backup
 
 **Mac:**
