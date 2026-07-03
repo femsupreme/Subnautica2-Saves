@@ -19,7 +19,7 @@ jobs:
           # GITHUB_TOKEN don't trigger the "Fixes #N" auto-close-on-merge
           # linkage, so the tracking issue is left open even though the fix
           # landed.
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.BOT_GH_PAT }}
           REPO: ${{ github.repository }}
           SHA: ${{ github.event.workflow_run.head_sha }}
         run: |

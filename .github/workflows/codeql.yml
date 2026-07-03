@@ -117,7 +117,7 @@ jobs:
           # Use a PAT, not github.token: events created by the default
           # GITHUB_TOKEN don't trigger other workflows (e.g. claude.yml),
           # so a comment/issue opened here would never actually reach Claude.
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.BOT_GH_PAT }}
           REPO: ${{ github.repository }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
