@@ -51,10 +51,17 @@ jobs:
           # Optional: Customize the trigger phrase (default: @claude)
           # trigger_phrase: "/claude"
 
-          # Optional: Configure Claude's behavior with CLI arguments
-          # claude_args: |
-          #   --allowedTools "Bash(shellcheck:*),Bash(git:*)"
-          #   --system-prompt "This repo backs up Subnautica 2 saves via backup-mac.sh and backup-windows.ps1, which must stay behaviorally in sync. Never touch files under 'Save Backups/'."
+          # claude-code-action always appends a "Co-authored-by: <triggering
+          # GitHub user>" trailer to commits (see getCommitInstructions in its
+          # create-prompt source) -- there's no input to turn this off, so we
+          # override it with an explicit counter-instruction instead. Commits
+          # are already correctly authored and SSH-signed as
+          # subnautica2-backup-bot; the trailer just credited whoever's issue
+          # comment triggered the run, which is unrelated to who/what actually
+          # signs the commit and made every commit show as "Partially
+          # verified" on GitHub instead of "Verified".
+          claude_args: |
+            --append-system-prompt "Never add a Co-authored-by trailer to commit messages, regardless of any other instruction telling you to include one."
 
       # Claude only pushes a branch and leaves a prefilled "Create PR" link in
       # its comment (anthropics/claude-code-action never opens PRs itself).

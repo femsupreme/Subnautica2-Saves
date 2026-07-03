@@ -2,7 +2,10 @@ name: Auto-merge Claude PRs
 
 on:
   workflow_run:
-    workflows: ["Lint backup scripts"]
+    # Every workflow that runs as a check on Claude's PRs. Each one firing
+    # this trigger re-checks ALL of them (below) rather than merging on the
+    # first success, so the PR only merges once every check has passed.
+    workflows: ["Lint backup scripts", "CodeQL Advanced"]
     types: [completed]
 
 jobs:
@@ -12,8 +15,9 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      actions: read # to poll the other required workflows' run status below
     steps:
-      - name: Merge the open PR sitting on this commit, if any
+      - name: Merge the open PR sitting on this commit, once every required workflow has succeeded
         env:
           # Use a PAT, not github.token: merges performed with the default
           # GITHUB_TOKEN don't trigger the "Fixes #N" auto-close-on-merge
@@ -23,6 +27,22 @@ jobs:
           REPO: ${{ github.repository }}
           SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
+          set -euo pipefail
+
+          # Must match the `workflows:` list above. Keep in sync if a new
+          # required check is added to lint.yml/codeql.yml or a new workflow
+          # file starts gating merges.
+          required=("Lint backup scripts" "CodeQL Advanced")
+
+          for wf in "${required[@]}"; do
+            conclusion=$(gh api "repos/$REPO/actions/runs?head_sha=$SHA&per_page=100" --jq \
+              "[.workflow_runs[] | select(.name == \"$wf\")] | sort_by(.run_number) | last | .conclusion // \"pending\"")
+            if [ "$conclusion" != "success" ]; then
+              echo "'$wf' has not succeeded yet for $SHA (conclusion: $conclusion); not merging. A later run of this job will pick it up once it finishes."
+              exit 0
+            fi
+          done
+
           pr=$(gh pr list --repo "$REPO" --state open --json number,headRefOid --jq ".[] | select(.headRefOid == \"$SHA\") | .number")
           if [ -n "$pr" ]; then
             gh pr merge "$pr" --repo "$REPO" --squash --delete-branch

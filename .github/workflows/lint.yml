@@ -10,15 +10,14 @@ on:
       - '.github/workflows/claude.yml'
       - '.github/workflows/auto-merge.yml'
       - '.github/workflows/codeql.yml'
+  # No path filter here (unlike the push trigger above): auto-merge.yml
+  # gates PR merges on this workflow completing, by name, for the PR's head
+  # SHA. A path filter that skips a PR (e.g. a README-only change) means
+  # this workflow never runs for that SHA at all, and auto-merge then waits
+  # forever for a run that's never coming. Every PR must trigger this
+  # workflow, whatever it touches.
   pull_request:
     types: [opened, synchronize, reopened]
-    paths:
-      - 'backup-mac.sh'
-      - 'backup-windows.ps1'
-      - '.github/workflows/lint.yml'
-      - '.github/workflows/claude.yml'
-      - '.github/workflows/auto-merge.yml'
-      - '.github/workflows/codeql.yml'
 
 jobs:
   shellcheck:
