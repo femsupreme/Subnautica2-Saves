@@ -19,6 +19,14 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+# Least-privilege default for the auto-provided GITHUB_TOKEN. All the lint /
+# smoke-test jobs below only need to read the repo (actions/checkout), so the
+# workflow-wide default is read-only. notify-on-failure re-grants the specific
+# write scopes it needs in its own job-level permissions block, and it uses a
+# separate PAT (secrets.BOT_GH_PAT) for the actual gh calls anyway.
+permissions:
+  contents: read
+
 jobs:
   shellcheck:
     runs-on: ubuntu-latest
