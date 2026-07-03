@@ -79,6 +79,22 @@ jobs:
           AFTER="$(git rev-parse HEAD)"
           [ "$BEFORE" = "$AFTER" ] || { echo "::error::second run should not have created a new commit"; exit 1; }
 
+          echo "--- Restore run: should overwrite the live save from the latest backup ---"
+          # Mutate the live save so we can prove --restore replaces it with the backup:
+          # change an existing file and drop in a stray one that the backup doesn't have.
+          echo "changed since backup" > "$FAKE_SAVE/save0.sav"
+          echo "stray file" > "$FAKE_SAVE/stray.sav"
+          # The restore prompt reads from stdin; typing "restore" confirms it.
+          echo "restore" | ./backup-mac.sh --restore
+          grep -q "dummy save data" "$FAKE_SAVE/save0.sav" \
+            || { echo "::error::restore did not overwrite the live save with the backup contents"; exit 1; }
+          if [ -e "$FAKE_SAVE/stray.sav" ]; then
+            echo "::error::restore should have replaced the whole save folder, but a stray file survived"
+            exit 1
+          fi
+          ls -d "$FAKE_SAVE".pre-restore-* >/dev/null 2>&1 \
+            || { echo "::error::restore did not leave a .pre-restore-* safety copy of the live save"; exit 1; }
+
           echo "--- Regression test: corrupted variable reference should fail loudly (set -u) ---"
           sed 's/source "\$CONFIG_FILE"/source "\$CONFIGdkjfhsdkjFILE"/' backup-mac.sh > backup-mac-corrupted.sh
           chmod +x backup-mac-corrupted.sh
@@ -138,6 +154,20 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "second (no-op) run should have exited 0, got $LASTEXITCODE" }
           $After = git rev-parse HEAD
           if ($Before -ne $After) { throw "second run should not have created a new commit" }
+
+          Write-Host "--- Restore run: should overwrite the live save from the latest backup ---"
+          # Mutate the live save so we can prove -Restore replaces it with the backup:
+          # change an existing file and drop in a stray one that the backup doesn't have.
+          Set-Content -Path (Join-Path $FakeSave "save0.sav") -Value "changed since backup"
+          Set-Content -Path (Join-Path $FakeSave "stray.sav") -Value "stray file"
+          # The restore prompt reads from stdin; piping "restore" in confirms it.
+          "restore" | pwsh -File ./backup-windows.ps1 -Restore
+          if ($LASTEXITCODE -ne 0) { throw "restore run should have succeeded, exit code $LASTEXITCODE" }
+          $Restored = Get-Content (Join-Path $FakeSave "save0.sav") -Raw
+          if ($Restored -notmatch "dummy save data") { throw "restore did not overwrite the live save with the backup contents" }
+          if (Test-Path (Join-Path $FakeSave "stray.sav")) { throw "restore should have replaced the whole save folder, but a stray file survived" }
+          $PreRestore = Get-ChildItem -Path $Work -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "save.pre-restore-*" }
+          if (-not $PreRestore) { throw "restore did not leave a .pre-restore-* safety copy of the live save" }
 
           Write-Host "--- Regression test: corrupted variable reference should fail loudly (Set-StrictMode) ---"
           $Corrupted = Join-Path $FakeRepo "backup-windows-corrupted.ps1"
