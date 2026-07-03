@@ -35,7 +35,7 @@ jobs:
           # the action itself. Without it, Claude's pushes authenticate as
           # github-actions[bot], and GitHub stalls the resulting pull_request
           # run as action_required pending manual approval.
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.BOT_GH_PAT }}
 
       - name: Run Claude Code
         id: claude
@@ -43,16 +43,10 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           # Same PAT as the checkout step above, and for the same reason.
-          github_token: ${{ secrets.GH_PAT }}
-
-          # main's ruleset requires signed commits, and unlike a plain git
-          # push, PR merges don't get an automatic bypass for that rule --
-          # an unsigned claude[bot] commit blocks auto-merge outright. This
-          # switches Claude to commit via the GitHub API (auto-signed and
-          # verified as the App) instead of raw git CLI. Trade-off: it can
-          # no longer do complex git operations like rebase/cherry-pick,
-          # which this repo's straightforward file edits don't need anyway.
-          use_commit_signing: true
+          github_token: ${{ secrets.BOT_GH_PAT }}
+          ssh_signing_key: ${{ secrets.BOT_SSH_SIGNING_KEY }}
+          bot_id: "299375299"
+          bot_name: "subnautica2-backup-bot"
 
           # Optional: Customize the trigger phrase (default: @claude)
           # trigger_phrase: "/claude"
@@ -69,7 +63,7 @@ jobs:
       - name: Open a PR for Claude's branch, if one was created
         if: github.event_name == 'issues' || (github.event_name == 'issue_comment' && github.event.issue.pull_request == null)
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.BOT_GH_PAT }}
           REPO: ${{ github.repository }}
           ISSUE: ${{ github.event.issue.number }}
         run: |
