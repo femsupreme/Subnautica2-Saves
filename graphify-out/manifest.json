@@ -1,0 +1,47 @@
+{
+  "backup-mac.sh": {
+    "mtime": 1783053226.6896203,
+    "ast_hash": "d71551b57b8244d047461dd5a8d0c5f6",
+    "semantic_hash": "d71551b57b8244d047461dd5a8d0c5f6"
+  },
+  "backup-windows.ps1": {
+    "mtime": 1783053226.6899,
+    "ast_hash": "8f341e23c104ee546cb9ed21b85e6193",
+    "semantic_hash": "8f341e23c104ee546cb9ed21b85e6193"
+  },
+  ".github/workflows/auto-merge.yml": {
+    "mtime": 1783054743.102934,
+    "ast_hash": "1dc458f3820aa1031e7f48e14585cdd8",
+    "semantic_hash": "1dc458f3820aa1031e7f48e14585cdd8"
+  },
+  ".github/workflows/claude.yml": {
+    "mtime": 1783054714.3200507,
+    "ast_hash": "0896f24aff16986f7097bca5c4dcd2d3",
+    "semantic_hash": "0896f24aff16986f7097bca5c4dcd2d3"
+  },
+  ".github/workflows/codeql.yml": {
+    "mtime": 1783053834.0254102,
+    "ast_hash": "0f0c377e03303c7e71d88437ba49f20d",
+    "semantic_hash": "0f0c377e03303c7e71d88437ba49f20d"
+  },
+  ".github/workflows/lint.yml": {
+    "mtime": 1783056179.5111797,
+    "ast_hash": "7b4148301c585fbd8ae87078518e562e",
+    "semantic_hash": "7b4148301c585fbd8ae87078518e562e"
+  },
+  "CLAUDE.md": {
+    "mtime": 1783054995.9699008,
+    "ast_hash": "99d15eb30891f94fa5caaf31b95ed98a",
+    "semantic_hash": "99d15eb30891f94fa5caaf31b95ed98a"
+  },
+  "README.md": {
+    "mtime": 1783053226.6894147,
+    "ast_hash": "89ef08de47b7fad3dd650fd12e658fde",
+    "semantic_hash": "89ef08de47b7fad3dd650fd12e658fde"
+  },
+  "savecode.txt": {
+    "mtime": 1783292781.2503011,
+    "ast_hash": "83e0b6ad327a576ea4902950b26d2331",
+    "semantic_hash": "83e0b6ad327a576ea4902950b26d2331"
+  }
+}

@@ -1,0 +1,1777 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {
+    "hyperedges": [
+      {
+        "id": "bot_gh_pat_automation_loop",
+        "label": "Self-healing CI automation loop using BOT_GH_PAT",
+        "nodes": [
+          "github_workflows_lint_lint_backup_scripts_workflow",
+          "github_workflows_codeql_codeql_advanced_workflow",
+          "github_workflows_claude_claude_code_workflow",
+          "github_workflows_auto_merge_auto_merge_pr_workflow",
+          "claude_md_bot_gh_pat_rationale"
+        ],
+        "relation": "participate_in",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "CLAUDE.md"
+      },
+      {
+        "id": "auto_merge_required_workflows",
+        "label": "Workflows required to succeed before auto-merge",
+        "nodes": [
+          "github_workflows_auto_merge_auto_merge_job",
+          "github_workflows_lint_lint_backup_scripts_workflow",
+          "github_workflows_codeql_codeql_advanced_workflow"
+        ],
+        "relation": "implement",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": ".github/workflows/auto-merge.yml"
+      },
+      {
+        "id": "backup_restore_sync_pair",
+        "label": "Mac/Windows scripts kept behaviorally in sync for backup and restore flows",
+        "nodes": [
+          "claude_md_backup_mac_sh",
+          "claude_md_backup_windows_ps1",
+          "claude_md_backup_flow",
+          "claude_md_restore_flow"
+        ],
+        "relation": "form",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "CLAUDE.md"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "label": "backup-mac.sh",
+      "file_type": "code",
+      "source_file": "backup-mac.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "_origin": "ast",
+      "id": "backup_mac",
+      "community": 2,
+      "norm_label": "backup-mac.sh"
+    },
+    {
+      "label": "backup-mac.sh script",
+      "file_type": "code",
+      "source_file": "backup-mac.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "_origin": "ast",
+      "id": "backup_mac_sh__entry",
+      "community": 2,
+      "norm_label": "backup-mac.sh script"
+    },
+    {
+      "label": "die()",
+      "file_type": "code",
+      "source_file": "backup-mac.sh",
+      "source_location": "L10",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "backup_mac_die",
+      "community": 2,
+      "norm_label": "die()"
+    },
+    {
+      "label": "require_git()",
+      "file_type": "code",
+      "source_file": "backup-mac.sh",
+      "source_location": "L15",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "backup_mac_require_git",
+      "community": 2,
+      "norm_label": "require_git()"
+    },
+    {
+      "label": "require_repo()",
+      "file_type": "code",
+      "source_file": "backup-mac.sh",
+      "source_location": "L19",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "backup_mac_require_repo",
+      "community": 2,
+      "norm_label": "require_repo()"
+    },
+    {
+      "label": "check_no_rebase_in_progress()",
+      "file_type": "code",
+      "source_file": "backup-mac.sh",
+      "source_location": "L24",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "backup_mac_check_no_rebase_in_progress",
+      "community": 2,
+      "norm_label": "check_no_rebase_in_progress()"
+    },
+    {
+      "label": "check_branch()",
+      "file_type": "code",
+      "source_file": "backup-mac.sh",
+      "source_location": "L30",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "backup_mac_check_branch",
+      "community": 2,
+      "norm_label": "check_branch()"
+    },
+    {
+      "label": "configure()",
+      "file_type": "code",
+      "source_file": "backup-mac.sh",
+      "source_location": "L38",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "backup_mac_configure",
+      "community": 2,
+      "norm_label": "configure()"
+    },
+    {
+      "label": "usage()",
+      "file_type": "code",
+      "source_file": "backup-mac.sh",
+      "source_location": "L56",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "backup_mac_usage",
+      "community": 2,
+      "norm_label": "usage()"
+    },
+    {
+      "label": "restore()",
+      "file_type": "code",
+      "source_file": "backup-mac.sh",
+      "source_location": "L73",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "backup_mac_restore",
+      "community": 2,
+      "norm_label": "restore()"
+    },
+    {
+      "label": "backup-windows.ps1",
+      "file_type": "code",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "backup_windows",
+      "community": 4,
+      "norm_label": "backup-windows.ps1"
+    },
+    {
+      "label": "Fail()",
+      "file_type": "code",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "backup_windows_fail",
+      "community": 4,
+      "norm_label": "fail()"
+    },
+    {
+      "label": "Test-GitAvailable()",
+      "file_type": "code",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "backup_windows_test_gitavailable",
+      "community": 4,
+      "norm_label": "test-gitavailable()"
+    },
+    {
+      "label": "Test-GitRepo()",
+      "file_type": "code",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "backup_windows_test_gitrepo",
+      "community": 4,
+      "norm_label": "test-gitrepo()"
+    },
+    {
+      "label": "Test-NoRebaseInProgress()",
+      "file_type": "code",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L36",
+      "_origin": "ast",
+      "id": "backup_windows_test_norebaseinprogress",
+      "community": 4,
+      "norm_label": "test-norebaseinprogress()"
+    },
+    {
+      "label": "Test-OnBranch()",
+      "file_type": "code",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L44",
+      "_origin": "ast",
+      "id": "backup_windows_test_onbranch",
+      "community": 4,
+      "norm_label": "test-onbranch()"
+    },
+    {
+      "label": "Initialize-Configuration()",
+      "file_type": "code",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L51",
+      "_origin": "ast",
+      "id": "backup_windows_initialize_configuration",
+      "community": 4,
+      "norm_label": "initialize-configuration()"
+    },
+    {
+      "label": "Invoke-Restore()",
+      "file_type": "code",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L84",
+      "_origin": "ast",
+      "id": "backup_windows_invoke_restore",
+      "community": 4,
+      "norm_label": "invoke-restore()"
+    },
+    {
+      "label": "Auto-merge Claude PRs workflow",
+      "file_type": "code",
+      "source_file": ".github/workflows/auto-merge.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_auto_merge_auto_merge_pr_workflow",
+      "community": 3,
+      "norm_label": "auto-merge claude prs workflow"
+    },
+    {
+      "label": "auto-merge job",
+      "file_type": "code",
+      "source_file": ".github/workflows/auto-merge.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_auto_merge_auto_merge_job",
+      "community": 3,
+      "norm_label": "auto-merge job"
+    },
+    {
+      "label": "secrets.BOT_GH_PAT (used in auto-merge.yml)",
+      "file_type": "concept",
+      "source_file": ".github/workflows/auto-merge.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_auto_merge_bot_gh_pat",
+      "community": 3,
+      "norm_label": "secrets.bot_gh_pat (used in auto-merge.yml)"
+    },
+    {
+      "label": "Claude Code workflow",
+      "file_type": "code",
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_claude_claude_code_workflow",
+      "community": 1,
+      "norm_label": "claude code workflow"
+    },
+    {
+      "label": "claude job",
+      "file_type": "code",
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_claude_claude_job",
+      "community": 1,
+      "norm_label": "claude job"
+    },
+    {
+      "label": "Checkout repository step (claude.yml)",
+      "file_type": "code",
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_claude_checkout_repository_step",
+      "community": 1,
+      "norm_label": "checkout repository step (claude.yml)"
+    },
+    {
+      "label": "Run Claude Code step (anthropics/claude-code-action)",
+      "file_type": "code",
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_claude_run_claude_code_step",
+      "community": 1,
+      "norm_label": "run claude code step (anthropics/claude-code-action)"
+    },
+    {
+      "label": "Open a PR for Claude's branch step",
+      "file_type": "code",
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_claude_open_pr_step",
+      "community": 1,
+      "norm_label": "open a pr for claude's branch step"
+    },
+    {
+      "label": "subnautica2-backup-bot identity",
+      "file_type": "concept",
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_claude_subnautica2_backup_bot",
+      "community": 1,
+      "norm_label": "subnautica2-backup-bot identity"
+    },
+    {
+      "label": "Co-authored-by trailer suppression via claude_args",
+      "file_type": "rationale",
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "claude-code-action always appends a Co-authored-by trailer with no dedicated toggle input; this previously downgraded commits from 'Verified' to 'Partially verified' on GitHub since the bot-signed commit got credited to an unrelated triggering user, so an explicit --append-system-prompt counter-instruction is used instead.",
+      "id": "github_workflows_claude_co_authored_by_suppression",
+      "community": 1,
+      "norm_label": "co-authored-by trailer suppression via claude_args"
+    },
+    {
+      "label": "secrets.BOT_GH_PAT (used in claude.yml)",
+      "file_type": "concept",
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_claude_bot_gh_pat",
+      "community": 1,
+      "norm_label": "secrets.bot_gh_pat (used in claude.yml)"
+    },
+    {
+      "label": "CodeQL Advanced workflow",
+      "file_type": "code",
+      "source_file": ".github/workflows/codeql.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_codeql_codeql_advanced_workflow",
+      "community": 3,
+      "norm_label": "codeql advanced workflow"
+    },
+    {
+      "label": "analyze job (CodeQL)",
+      "file_type": "code",
+      "source_file": ".github/workflows/codeql.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_codeql_analyze_job",
+      "community": 3,
+      "norm_label": "analyze job (codeql)"
+    },
+    {
+      "label": "notify-on-alert job",
+      "file_type": "code",
+      "source_file": ".github/workflows/codeql.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_codeql_notify_on_alert_job",
+      "community": 3,
+      "norm_label": "notify-on-alert job"
+    },
+    {
+      "label": "secrets.BOT_GH_PAT (used in codeql.yml)",
+      "file_type": "concept",
+      "source_file": ".github/workflows/codeql.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_codeql_bot_gh_pat",
+      "community": 3,
+      "norm_label": "secrets.bot_gh_pat (used in codeql.yml)"
+    },
+    {
+      "label": "codeql-alert tracking issue label",
+      "file_type": "concept",
+      "source_file": ".github/workflows/codeql.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_codeql_codeql_alert_label",
+      "community": 3,
+      "norm_label": "codeql-alert tracking issue label"
+    },
+    {
+      "label": "Lint backup scripts workflow",
+      "file_type": "code",
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_lint_lint_backup_scripts_workflow",
+      "community": 0,
+      "norm_label": "lint backup scripts workflow"
+    },
+    {
+      "label": "shellcheck job",
+      "file_type": "code",
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_lint_shellcheck_job",
+      "community": 0,
+      "norm_label": "shellcheck job"
+    },
+    {
+      "label": "psscriptanalyzer job",
+      "file_type": "code",
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_lint_psscriptanalyzer_job",
+      "community": 0,
+      "norm_label": "psscriptanalyzer job"
+    },
+    {
+      "label": "smoke-test-mac job",
+      "file_type": "code",
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_lint_smoke_test_mac_job",
+      "community": 0,
+      "norm_label": "smoke-test-mac job"
+    },
+    {
+      "label": "smoke-test-windows job",
+      "file_type": "code",
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_lint_smoke_test_windows_job",
+      "community": 0,
+      "norm_label": "smoke-test-windows job"
+    },
+    {
+      "label": "notify-on-failure job",
+      "file_type": "code",
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_lint_notify_on_failure_job",
+      "community": 1,
+      "norm_label": "notify-on-failure job"
+    },
+    {
+      "label": "secrets.BOT_GH_PAT (used in lint.yml)",
+      "file_type": "concept",
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_lint_bot_gh_pat",
+      "community": 1,
+      "norm_label": "secrets.bot_gh_pat (used in lint.yml)"
+    },
+    {
+      "label": "ci-failure tracking issue label",
+      "file_type": "concept",
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "github_workflows_lint_ci_failure_label",
+      "community": 1,
+      "norm_label": "ci-failure tracking issue label"
+    },
+    {
+      "label": "No path filter on pull_request trigger",
+      "file_type": "rationale",
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "auto-merge.yml gates PR merges on lint.yml completing by name for the PR's head SHA; a path filter that skipped a PR would make auto-merge wait forever on a run that never happens, so every PR must trigger this workflow regardless of what it touches.",
+      "id": "github_workflows_lint_no_path_filter_rationale",
+      "community": 3,
+      "norm_label": "no path filter on pull_request trigger"
+    },
+    {
+      "label": "backup-mac.sh",
+      "file_type": "concept",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "claude_md_backup_mac_sh",
+      "community": 0,
+      "norm_label": "backup-mac.sh"
+    },
+    {
+      "label": "backup-windows.ps1",
+      "file_type": "concept",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "claude_md_backup_windows_ps1",
+      "community": 0,
+      "norm_label": "backup-windows.ps1"
+    },
+    {
+      "label": "Backup flow (save folder -> repo)",
+      "file_type": "concept",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "claude_md_backup_flow",
+      "community": 0,
+      "norm_label": "backup flow (save folder -> repo)"
+    },
+    {
+      "label": "Restore flow (repo -> save folder)",
+      "file_type": "concept",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Restore skips the backup-only save-path-exists/readable/non-empty checks because the live save may legitimately be missing/empty when restoring onto a fresh machine; pre-restore safety copies are intentionally left in place as the user's undo path.",
+      "id": "claude_md_restore_flow",
+      "community": 0,
+      "norm_label": "restore flow (repo -> save folder)"
+    },
+    {
+      "label": "backup.config (gitignored, machine-specific)",
+      "file_type": "concept",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "claude_md_backup_config",
+      "community": 0,
+      "norm_label": "backup.config (gitignored, machine-specific)"
+    },
+    {
+      "label": "backup.config.example (committed template)",
+      "file_type": "concept",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "claude_md_backup_config_example",
+      "community": 0,
+      "norm_label": "backup.config.example (committed template)"
+    },
+    {
+      "label": "Save Backups/<date>/ snapshot folders",
+      "file_type": "concept",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "claude_md_save_backups_dir",
+      "community": 0,
+      "norm_label": "save backups/<date>/ snapshot folders"
+    },
+    {
+      "label": "savecode.txt",
+      "file_type": "concept",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "claude_md_savecode_txt",
+      "community": 5,
+      "norm_label": "savecode.txt"
+    },
+    {
+      "label": "PAT-over-GITHUB_TOKEN automation design",
+      "file_type": "rationale",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Deliberately uses secrets.BOT_GH_PAT instead of default GITHUB_TOKEN or a personal PAT wherever one workflow needs to trigger another, to keep @claude-mention and Fixes #N auto-close linkages working and to attribute commits/merges/comments to the bot rather than a human, creating a self-healing CI-failure -> @claude -> fix -> CI -> auto-merge loop.",
+      "id": "claude_md_bot_gh_pat_rationale",
+      "community": 3,
+      "norm_label": "pat-over-github_token automation design"
+    },
+    {
+      "label": "README.md (Subnautica 2 Saves)",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "readme_readme_doc",
+      "community": 0,
+      "norm_label": "readme.md (subnautica 2 saves)"
+    },
+    {
+      "label": "Subnautica 2 save/friend code note",
+      "file_type": "document",
+      "source_file": "savecode.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "savecode_save_friend_code",
+      "community": 5,
+      "norm_label": "subnautica 2 save/friend code note"
+    }
+  ],
+  "links": [
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "backup_mac",
+      "target": "backup_mac_check_branch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "backup_mac",
+      "target": "backup_mac_check_no_rebase_in_progress",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "backup_mac",
+      "target": "backup_mac_configure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "backup_mac",
+      "target": "backup_mac_die",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "backup_mac",
+      "target": "backup_mac_require_git",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "backup_mac",
+      "target": "backup_mac_require_repo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "backup_mac",
+      "target": "backup_mac_restore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "backup_mac",
+      "target": "backup_mac_sh__entry",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "backup_mac",
+      "target": "backup_mac_usage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L210",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_sh__entry",
+      "target": "backup_mac_check_branch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L209",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_sh__entry",
+      "target": "backup_mac_check_no_rebase_in_progress",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L177",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_sh__entry",
+      "target": "backup_mac_configure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L170",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_sh__entry",
+      "target": "backup_mac_die",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L173",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_sh__entry",
+      "target": "backup_mac_require_git",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L174",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_sh__entry",
+      "target": "backup_mac_require_repo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L191",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_sh__entry",
+      "target": "backup_mac_restore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L168",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_sh__entry",
+      "target": "backup_mac_usage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L34",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_check_branch",
+      "target": "backup_mac_die",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L26",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_check_no_rebase_in_progress",
+      "target": "backup_mac_die",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L45",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_configure",
+      "target": "backup_mac_die",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L16",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_require_git",
+      "target": "backup_mac_die",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L21",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_require_repo",
+      "target": "backup_mac_die",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L74",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_restore",
+      "target": "backup_mac_die",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L76",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_restore",
+      "target": "backup_mac_check_no_rebase_in_progress",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-mac.sh",
+      "source_location": "L77",
+      "weight": 1.0,
+      "context": "call",
+      "source": "backup_mac_restore",
+      "target": "backup_mac_check_branch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "backup_windows",
+      "target": "backup_windows_fail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "backup_windows",
+      "target": "backup_windows_initialize_configuration",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "backup_windows",
+      "target": "backup_windows_invoke_restore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "backup_windows",
+      "target": "backup_windows_test_gitavailable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "backup_windows",
+      "target": "backup_windows_test_gitrepo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "backup_windows",
+      "target": "backup_windows_test_norebaseinprogress",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "backup_windows",
+      "target": "backup_windows_test_onbranch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "backup_windows_initialize_configuration",
+      "target": "backup_windows_fail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L90",
+      "weight": 1.0,
+      "source": "backup_windows_invoke_restore",
+      "target": "backup_windows_fail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "backup_windows_test_gitavailable",
+      "target": "backup_windows_fail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "backup_windows_test_gitrepo",
+      "target": "backup_windows_fail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "backup_windows_test_norebaseinprogress",
+      "target": "backup_windows_fail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "backup_windows_test_onbranch",
+      "target": "backup_windows_fail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "backup_windows_invoke_restore",
+      "target": "backup_windows_test_norebaseinprogress",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backup-windows.ps1",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "backup_windows_invoke_restore",
+      "target": "backup_windows_test_onbranch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/auto-merge.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_auto_merge_auto_merge_pr_workflow",
+      "target": "github_workflows_auto_merge_auto_merge_job"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_no_path_filter_rationale",
+      "target": "github_workflows_auto_merge_auto_merge_pr_workflow"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/auto-merge.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_auto_merge_auto_merge_job",
+      "target": "github_workflows_auto_merge_bot_gh_pat"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/auto-merge.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_auto_merge_auto_merge_job",
+      "target": "github_workflows_codeql_codeql_advanced_workflow"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/auto-merge.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_auto_merge_auto_merge_job",
+      "target": "github_workflows_lint_lint_backup_scripts_workflow"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_bot_gh_pat_rationale",
+      "target": "github_workflows_auto_merge_bot_gh_pat"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_claude_claude_code_workflow",
+      "target": "github_workflows_claude_claude_job"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/codeql.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_codeql_notify_on_alert_job",
+      "target": "github_workflows_claude_claude_code_workflow"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_notify_on_failure_job",
+      "target": "github_workflows_claude_claude_code_workflow"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_claude_claude_job",
+      "target": "github_workflows_claude_checkout_repository_step"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_claude_claude_job",
+      "target": "github_workflows_claude_open_pr_step"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_claude_claude_job",
+      "target": "github_workflows_claude_run_claude_code_step"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_claude_checkout_repository_step",
+      "target": "github_workflows_claude_bot_gh_pat"
+    },
+    {
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_claude_checkout_repository_step",
+      "target": "github_workflows_claude_run_claude_code_step"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_claude_run_claude_code_step",
+      "target": "github_workflows_claude_bot_gh_pat"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_claude_run_claude_code_step",
+      "target": "github_workflows_claude_co_authored_by_suppression"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/claude.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_claude_run_claude_code_step",
+      "target": "github_workflows_claude_subnautica2_backup_bot"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_bot_gh_pat_rationale",
+      "target": "github_workflows_claude_bot_gh_pat"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/codeql.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_codeql_codeql_advanced_workflow",
+      "target": "github_workflows_codeql_analyze_job"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/codeql.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_codeql_codeql_advanced_workflow",
+      "target": "github_workflows_codeql_notify_on_alert_job"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/codeql.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_codeql_notify_on_alert_job",
+      "target": "github_workflows_codeql_analyze_job"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/codeql.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_codeql_notify_on_alert_job",
+      "target": "github_workflows_codeql_bot_gh_pat"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/codeql.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_codeql_notify_on_alert_job",
+      "target": "github_workflows_codeql_codeql_alert_label"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_bot_gh_pat_rationale",
+      "target": "github_workflows_codeql_bot_gh_pat"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_backup_flow",
+      "target": "github_workflows_lint_lint_backup_scripts_workflow"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_lint_backup_scripts_workflow",
+      "target": "github_workflows_lint_notify_on_failure_job"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_lint_backup_scripts_workflow",
+      "target": "github_workflows_lint_psscriptanalyzer_job"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_lint_backup_scripts_workflow",
+      "target": "github_workflows_lint_shellcheck_job"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_lint_backup_scripts_workflow",
+      "target": "github_workflows_lint_smoke_test_mac_job"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_lint_backup_scripts_workflow",
+      "target": "github_workflows_lint_smoke_test_windows_job"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_no_path_filter_rationale",
+      "target": "github_workflows_lint_lint_backup_scripts_workflow"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_shellcheck_job",
+      "target": "claude_md_backup_mac_sh"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_psscriptanalyzer_job",
+      "target": "claude_md_backup_windows_ps1"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_smoke_test_mac_job",
+      "target": "claude_md_backup_mac_sh"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_smoke_test_mac_job",
+      "target": "claude_md_restore_flow"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_smoke_test_windows_job",
+      "target": "claude_md_backup_windows_ps1"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_smoke_test_windows_job",
+      "target": "claude_md_restore_flow"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_notify_on_failure_job",
+      "target": "github_workflows_lint_bot_gh_pat"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/lint.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "github_workflows_lint_notify_on_failure_job",
+      "target": "github_workflows_lint_ci_failure_label"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_bot_gh_pat_rationale",
+      "target": "github_workflows_lint_bot_gh_pat"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_backup_mac_sh",
+      "target": "claude_md_backup_config"
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_backup_mac_sh",
+      "target": "claude_md_backup_flow"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_backup_mac_sh",
+      "target": "claude_md_backup_windows_ps1"
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_backup_mac_sh",
+      "target": "claude_md_restore_flow"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "readme_readme_doc",
+      "target": "claude_md_backup_mac_sh"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_backup_windows_ps1",
+      "target": "claude_md_backup_config"
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_backup_windows_ps1",
+      "target": "claude_md_backup_flow"
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_backup_windows_ps1",
+      "target": "claude_md_restore_flow"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "readme_readme_doc",
+      "target": "claude_md_backup_windows_ps1"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_backup_flow",
+      "target": "claude_md_save_backups_dir"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "readme_readme_doc",
+      "target": "claude_md_backup_flow"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_restore_flow",
+      "target": "claude_md_save_backups_dir"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "readme_readme_doc",
+      "target": "claude_md_restore_flow"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_backup_config",
+      "target": "claude_md_backup_config_example"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "readme_readme_doc",
+      "target": "claude_md_backup_config"
+    },
+    {
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "readme_readme_doc",
+      "target": "claude_md_save_backups_dir"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_md_savecode_txt",
+      "target": "savecode_save_friend_code"
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "bot_gh_pat_automation_loop",
+      "label": "Self-healing CI automation loop using BOT_GH_PAT",
+      "nodes": [
+        "github_workflows_lint_lint_backup_scripts_workflow",
+        "github_workflows_codeql_codeql_advanced_workflow",
+        "github_workflows_claude_claude_code_workflow",
+        "github_workflows_auto_merge_auto_merge_pr_workflow",
+        "claude_md_bot_gh_pat_rationale"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md"
+    },
+    {
+      "id": "auto_merge_required_workflows",
+      "label": "Workflows required to succeed before auto-merge",
+      "nodes": [
+        "github_workflows_auto_merge_auto_merge_job",
+        "github_workflows_lint_lint_backup_scripts_workflow",
+        "github_workflows_codeql_codeql_advanced_workflow"
+      ],
+      "relation": "implement",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/auto-merge.yml"
+    },
+    {
+      "id": "backup_restore_sync_pair",
+      "label": "Mac/Windows scripts kept behaviorally in sync for backup and restore flows",
+      "nodes": [
+        "claude_md_backup_mac_sh",
+        "claude_md_backup_windows_ps1",
+        "claude_md_backup_flow",
+        "claude_md_restore_flow"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md"
+    }
+  ],
+  "built_at_commit": "df4463c33fbfd9d65e8c6a9890e9c6f666236a95"
+}
